@@ -7,22 +7,22 @@ public class Project {
         HIGH
     }
 
-    public String name;
-    public String client;
+    private final String name;
+    private final Client client;
     public int daysToFinish;
     public double deadlinePenalty;
     public double reward;
     public int paymentDays;
     public Level complexityLevel;
 
-    private int frontendHours = 0;
-    private int backendHours = 0;
-    private int databaseHours = 0;
-    private int mobileHours = 0;
-    private int wordpressHours = 0;
-    private int prestashopHours = 0;
+    private int frontendDays = 0;
+    private int backendDays = 0;
+    private int databaseDays = 0;
+    private int mobileDays = 0;
+    private int wordpressDays = 0;
+    private int prestashopDays = 0;
 
-    public Project (String name, String client, int daysToFinish, double deadlinePenalty, double reward, int paymentDays, Level complexityLevel)
+    public Project (String name, Client client, int daysToFinish, double deadlinePenalty, double reward, int paymentDays, Level complexityLevel)
     {
         this.name = name;
         this.client = client;
@@ -34,51 +34,51 @@ public class Project {
     }
 
 
-    public void setFrontendHours(int frontendHours) {
-        this.frontendHours = frontendHours;
+    public void setFrontendDays(int frontendDays) {
+        this.frontendDays = frontendDays;
     }
 
-    public void setBackendHours(int backendHours) {
-        this.backendHours = backendHours;
+    public void setBackendDays(int backendDays) {
+        this.backendDays = backendDays;
     }
 
-    public void setDatabaseHours(int databaseHours) {
-        this.databaseHours = databaseHours;
+    public void setDatabaseDays(int databaseDays) {
+        this.databaseDays = databaseDays;
     }
 
-    public void setMobileHours(int mobileHours) {
-        this.mobileHours = mobileHours;
+    public void setMobileDays(int mobileDays) {
+        this.mobileDays = mobileDays;
     }
 
-    public void setWordpressHours(int wordpressHours) {
-        this.wordpressHours = wordpressHours;
+    public void setWordpressDays(int wordpressDays) {
+        this.wordpressDays = wordpressDays;
     }
 
-    public void setPrestashopHours(int prestashopHours) {
-        this.prestashopHours = prestashopHours;
+    public void setPrestashopDays(int prestashopDays) {
+        this.prestashopDays = prestashopDays;
     }
 
-    public int getFrontendHours() {
-        return frontendHours;
+    public int getFrontendDays() {
+        return frontendDays;
     }
 
-    public int getBackendHours() {
-        return backendHours;
+    public int getBackendDays() {
+        return backendDays;
     }
 
-    public int getDatabaseHours() {
-        return databaseHours;
+    public int getDatabaseDays() {
+        return databaseDays;
     }
 
-    public int getMobileHours() {
-        return mobileHours;
+    public int getMobileDays() {
+        return mobileDays;
     }
 
-    public int getWordpressHours() {
-        return wordpressHours;
+    public int getWordpressDays() {
+        return wordpressDays;
     }
 
-    public int getPrestashopHours() {
-        return prestashopHours;
+    public int getPrestashopDays() {
+        return prestashopDays;
     }
 }
