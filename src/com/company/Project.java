@@ -33,6 +33,19 @@ public class Project {
         this.complexityLevel = complexityLevel;
     }
 
+    @Override
+    public String toString() {
+        return "Nazwa: " + this.getName() +
+                "\nKlient: " + this.client.getName() +
+                "\nCzas na wykonanie: " + this.daysToFinish +
+                "\nKara za opóźnienie: " + this.deadlinePenalty +
+                "\nWynagrodzenie: " + this.reward +
+                "\nDni na wypłacenie wynagrodzenia: " + this.paymentDays;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public void setFrontendDays(int frontendDays) {
         this.frontendDays = frontendDays;

@@ -1,15 +1,64 @@
 package com.company;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
     private ArrayList<Client> clients = new ArrayList<Client>();
     private ArrayList<Project> projects = new ArrayList<Project>();
+    private ArrayList<Project> activeProjects = new ArrayList<Project>();
 
     public Game() {
         this.initClients();
         this.initProjects();
+        this.showStartProjectView();
+    }
+
+    private void showMainView()
+    {
+    }
+
+    private void showStartProjectView()
+    {
+        System.out.println("Appstore - company simulator");
+        System.out.println("Janusz Dereszewski");
+        System.out.println("============================");
+
+        ArrayList<Project> startProjects = new ArrayList<Project>();
+        while (startProjects.size() < 3) {
+            Random random = new Random();
+            Project startProject = this.projects.get(random.nextInt(this.projects.size()));
+            if (startProjects.contains(startProject)) {
+                continue;
+            }
+            startProjects.add(startProject);
+        }
+        int index = 0;
+        for (Project project : startProjects) {
+            System.out.println(++index + ") " + project);
+            System.out.println("============================");
+        }
+
+        System.out.println("Podaj numer projektu: ");
+        int option = 0;
+        while (true) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                option = Integer.parseInt(br.readLine());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (option > 0 && option < 4) {
+                option--;
+                activeProjects.add(startProjects.get(option));
+                projects.remove(startProjects.get(option));
+                break;
+            }
+        }
+        this.showMainView();
     }
 
     private void initClients() {
