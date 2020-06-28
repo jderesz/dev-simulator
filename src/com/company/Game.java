@@ -10,6 +10,7 @@ import java.util.Random;
 public class Game {
     private ArrayList<Client> clients = new ArrayList<Client>();
     private ArrayList<Project> projects = new ArrayList<Project>();
+    private ArrayList<Project> availableProjects = new ArrayList<Project>();
     private ArrayList<Project> activeProjects = new ArrayList<Project>();
     private double cash = 500.0;
     private LocalDate date = LocalDate.parse("2020-01-01");
@@ -26,7 +27,7 @@ public class Game {
     {
         System.out.println("============================");
         System.out.println("Pieniądze: " + this.cash + " | Dzień: " + this.date.toString() + " (" + this.getDayOfWeek() + ")");
-        System.out.println("1) Podpisz umowe na nowy projekt");
+        System.out.println("1) Podpisz umowę na nowy projekt");
         System.out.println("2) Szukaj klientów (" + this.daysOfSearchingClients + "/5)");
         System.out.println("3) Programuj");
         System.out.println("4) Testuj");
@@ -35,7 +36,35 @@ public class Game {
         System.out.println("7) Zwolnij pracownika");
         System.out.println("8) Rozlicz się z urzędem (" + this.billsDays + "/2)");
 
+        int option = this.getKey(1, 8);
+        switch (option) {
+            case 1:
+                this.showAvailableProjectsView();
+                break;
+        }
+    }
 
+    private void showAvailableProjectsView() {
+        System.out.println("============================");
+        if (this.availableProjects.size() == 0 ) {
+            System.out.println("Brak dostępnych projektów");
+            System.out.println("1) powrót");
+            int option = this.getKey(1, 1);
+            this.showMainView();
+        }
+
+        int index = 0;
+        for (Project project : this.availableProjects) {
+            System.out.println(++index + ") " + project);
+            System.out.println("============================");
+        }
+
+        System.out.println("Podaj numer projektu: ");
+        int option = getKey(1, this.availableProjects.size());
+        option--;
+        this.activeProjects.add(this.availableProjects.get(option));
+        this.availableProjects.remove(this.availableProjects.get(option));
+        this.showMainView();
     }
 
     private void showStartProjectView()
