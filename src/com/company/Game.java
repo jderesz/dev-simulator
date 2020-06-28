@@ -3,6 +3,7 @@ package com.company;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,6 +11,10 @@ public class Game {
     private ArrayList<Client> clients = new ArrayList<Client>();
     private ArrayList<Project> projects = new ArrayList<Project>();
     private ArrayList<Project> activeProjects = new ArrayList<Project>();
+    private double cash = 500.0;
+    private LocalDate date = LocalDate.parse("2020-01-01");
+    private int daysOfSearchingClients = 0;
+    private int billsDays = 0;
 
     public Game() {
         this.initClients();
@@ -19,6 +24,18 @@ public class Game {
 
     private void showMainView()
     {
+        System.out.println("============================");
+        System.out.println("Pieniądze: " + this.cash + " | Dzień: " + this.date.toString() + " (" + this.getDayOfWeek() + ")");
+        System.out.println("1) Podpisz umowe na nowy projekt");
+        System.out.println("2) Szukaj klientów (" + this.daysOfSearchingClients + "/5)");
+        System.out.println("3) Programuj");
+        System.out.println("4) Testuj");
+        System.out.println("5) Oddaj projekt");
+        System.out.println("6) Zatrudnij pracownika");
+        System.out.println("7) Zwolnij pracownika");
+        System.out.println("8) Rozlicz się z urzędem (" + this.billsDays + "/2)");
+
+
     }
 
     private void showStartProjectView()
@@ -43,21 +60,10 @@ public class Game {
         }
 
         System.out.println("Podaj numer projektu: ");
-        int option = 0;
-        while (true) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            try {
-                option = Integer.parseInt(br.readLine());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (option > 0 && option < 4) {
-                option--;
-                activeProjects.add(startProjects.get(option));
-                projects.remove(startProjects.get(option));
-                break;
-            }
-        }
+        int option = getKey(1, 3);
+        option--;
+        activeProjects.add(startProjects.get(option));
+        projects.remove(startProjects.get(option));
         this.showMainView();
     }
 
@@ -105,5 +111,50 @@ public class Game {
         project = new Project("Baza danych szkoły", this.getRandomClient(), 8, 400.0, 1600.0, 7, Project.Level.LOW);
         project.setDatabaseDays(8);
         projects.add(project);
+    }
+
+    public int getKey(int min, int max)
+    {
+        int option;
+        String line;
+        while (true) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                line = br.readLine();
+            } catch (IOException e) {
+                continue;
+            }
+            try {
+                option = Integer.parseInt(line);
+            } catch(NumberFormatException e){
+                continue;
+            }
+
+            if (option >= min && option <= max) {
+                return option;
+            }
+        }
+    }
+
+    private String getDayOfWeek()
+    {
+        switch (this.date.getDayOfWeek().getValue()) {
+            case 0:
+                return "poniedziałek";
+            case 1:
+                return "wtorek";
+            case 2:
+                return "środa";
+            case 3:
+                return "czwartek";
+            case 4:
+                return "piątek";
+            case 5:
+                return "sobota";
+            case 6:
+                return "niedziela";
+            default:
+                return "error";
+        }
     }
 }
