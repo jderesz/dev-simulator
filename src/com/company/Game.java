@@ -41,16 +41,37 @@ public class Game {
             case 1:
                 this.showAvailableProjectsView();
                 break;
+            case 2:
+                this.showFindNewProjectView();
+                break;
         }
+    }
+
+    private void showFindNewProjectView() {
+        this.daysOfSearchingClients++;
+        if (this.daysOfSearchingClients == 5) {
+            Random random = new Random();
+            Project newProject = this.projects.get(random.nextInt(this.projects.size()));
+            this.availableProjects.add(newProject);
+            this.projects.remove(newProject);
+            this.daysOfSearchingClients = 0;
+        }
+        this.nextDay();
+        this.showMainView();
+    }
+
+    private void nextDay() {
+        this.date = this.date.plusDays(1);
     }
 
     private void showAvailableProjectsView() {
         System.out.println("============================");
         if (this.availableProjects.size() == 0 ) {
             System.out.println("Brak dostępnych projektów");
-            System.out.println("1) powrót");
-            int option = this.getKey(1, 1);
+            System.out.println("0) powrót");
+            int option = this.getKey(0, 0);
             this.showMainView();
+            return;
         }
 
         int index = 0;
@@ -58,12 +79,15 @@ public class Game {
             System.out.println(++index + ") " + project);
             System.out.println("============================");
         }
+        System.out.println("0) powrót");
 
         System.out.println("Podaj numer projektu: ");
-        int option = getKey(1, this.availableProjects.size());
-        option--;
-        this.activeProjects.add(this.availableProjects.get(option));
-        this.availableProjects.remove(this.availableProjects.get(option));
+        int option = getKey(0, this.availableProjects.size());
+        if (option != 0) {
+            option--;
+            this.activeProjects.add(this.availableProjects.get(option));
+            this.availableProjects.remove(this.availableProjects.get(option));
+        }
         this.showMainView();
     }
 
@@ -168,8 +192,6 @@ public class Game {
     private String getDayOfWeek()
     {
         switch (this.date.getDayOfWeek().getValue()) {
-            case 0:
-                return "poniedziałek";
             case 1:
                 return "wtorek";
             case 2:
@@ -182,8 +204,10 @@ public class Game {
                 return "sobota";
             case 6:
                 return "niedziela";
+            case 7:
+                return "poniedziałek";
             default:
-                return "error";
+                return String.valueOf(this.date.getDayOfWeek().getValue());
         }
     }
 }
