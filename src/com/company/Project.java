@@ -33,6 +33,45 @@ public class Project {
         this.complexityLevel = complexityLevel;
     }
 
+    public void selfProgramming() {
+        if (this.backendDays > 0) {
+            this.backendDays--;
+            return;
+        }
+        if (this.databaseDays > 0) {
+            this.databaseDays--;
+            return;
+        }
+        if (this.frontendDays > 0) {
+            this.frontendDays--;
+            return;
+        }
+        if (this.wordpressDays > 0) {
+            this.wordpressDays--;
+            return;
+        }
+        if (this.prestashopDays > 0) {
+            this.prestashopDays--;
+            return;
+        }
+    }
+
+    public void dayilyAction() {
+        this.daysToFinish--;
+        if (this.daysToFinish == 0) {
+            //kara za opoznienie
+        }
+    }
+
+    public boolean isFinished() {
+        return this.frontendDays <= 0 &&
+                this.backendDays <= 0 &&
+                this.databaseDays <= 0 &&
+                this.mobileDays <= 0 &&
+                this.wordpressDays <= 0 &&
+                this.prestashopDays <= 0;
+    }
+
     @Override
     public String toString() {
         return "Nazwa: " + this.getName() +

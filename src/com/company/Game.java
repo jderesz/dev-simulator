@@ -12,6 +12,7 @@ public class Game {
     private ArrayList<Project> projects = new ArrayList<Project>();
     private ArrayList<Project> availableProjects = new ArrayList<Project>();
     private ArrayList<Project> activeProjects = new ArrayList<Project>();
+    private ArrayList<Project> finishedProjects = new ArrayList<Project>();
     private double cash = 500.0;
     private LocalDate date = LocalDate.parse("2020-01-01");
     private int daysOfSearchingClients = 0;
@@ -44,7 +45,67 @@ public class Game {
             case 2:
                 this.showFindNewProjectView();
                 break;
+            case 3:
+                this.showSelfProgrammingView();
+                break;
+            case 5:
+                this.showFinishProjectView();
+                break;
         }
+    }
+
+    private void showFinishProjectView() {
+        ArrayList<Project> projectToFinish = new ArrayList<Project>();
+        int index = 0;
+        for (Project project : this.activeProjects) {
+            if (project.isFinished()) {
+                projectToFinish.add(project);
+            }
+        }
+        if (projectToFinish.size() == 0) {
+            System.out.println("Brak dostępnych projektów");
+        } else {
+            System.out.println("Wybierz który projekt chcesz oddać:");
+            for (Project project : projectToFinish) {
+                System.out.println(++index + ") " + project.getName());
+            }
+        }
+        System.out.println("0) powrót");
+        int option = this.getKey(0, projectToFinish.size());
+        if (option > 0) {
+            Project project = projectToFinish.get(--index);
+            this.activeProjects.remove(project);
+            this.finishedProjects.add(project);
+            this.cash += project.reward;
+        }
+        this.showMainView();
+    }
+
+    private void showSelfProgrammingView() {
+        System.out.println("============================");
+        if (this.activeProjects.size() == 0 ) {
+            System.out.println("Brak dostępnych projektów");
+            System.out.println("0) powrót");
+            int option = this.getKey(0, 0);
+            this.showMainView();
+            return;
+        }
+
+        int index = 0;
+        for (Project project : this.activeProjects) {
+            System.out.println(++index + ") " + project);
+            System.out.println("============================");
+        }
+        System.out.println("0) powrót");
+
+        System.out.println("Podaj numer projektu: ");
+        int option = getKey(0, this.activeProjects.size());
+        if (option != 0) {
+            option--;
+            this.activeProjects.get(option).selfProgramming();
+            this.nextDay();
+        }
+        this.showMainView();
     }
 
     private void showFindNewProjectView() {
@@ -62,6 +123,9 @@ public class Game {
 
     private void nextDay() {
         this.date = this.date.plusDays(1);
+        for (Project project : this.activeProjects) {
+            project.dayilyAction();
+        }
     }
 
     private void showAvailableProjectsView() {
