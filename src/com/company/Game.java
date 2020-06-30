@@ -28,7 +28,7 @@ public class Game {
     {
         System.out.println("============================");
         System.out.println("Pieniądze: " + this.cash + " | Dzień: " + this.date.toString() + " (" + this.getDayOfWeek() + ")");
-        System.out.println("1) Podpisz umowę na nowy projekt");
+        System.out.println("1) Podpisz umowę na nowy projekt (dostępne: " + this.availableProjects.size() + ")");
         System.out.println("2) Szukaj klientów (" + this.daysOfSearchingClients + "/5)");
         System.out.println("3) Programuj");
         System.out.println("4) Testuj");
@@ -51,7 +51,18 @@ public class Game {
             case 5:
                 this.showFinishProjectView();
                 break;
+            case 8:
+                this.showOfficeHoursView();
+                break;
         }
+    }
+
+    private void showOfficeHoursView() {
+        if (this.billsDays < 2) {
+            this.billsDays++;
+            this.nextDay();
+        }
+        this.showMainView();
     }
 
     private void showFinishProjectView() {
@@ -123,6 +134,13 @@ public class Game {
 
     private void nextDay() {
         this.date = this.date.plusDays(1);
+        if (this.date.getDayOfMonth() == 1) {
+            if (this.billsDays < 2){
+                System.out.println("ZUS Cię dojechał - uciekaj na Malediwy");
+                System.exit(0);
+            }
+            this.billsDays = 0;
+        }
         for (Project project : this.activeProjects) {
             project.dayilyAction();
         }
