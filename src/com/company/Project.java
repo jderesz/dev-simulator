@@ -10,6 +10,7 @@ public class Project {
     private final String name;
     private final Client client;
     public int daysToFinish;
+    private int days;
     public double deadlinePenalty;
     public double reward;
     public int paymentDays;
@@ -27,6 +28,7 @@ public class Project {
         this.name = name;
         this.client = client;
         this.daysToFinish = daysToFinish;
+        this.days = daysToFinish;
         this.deadlinePenalty = deadlinePenalty;
         this.reward = reward;
         this.paymentDays = paymentDays;
@@ -70,6 +72,16 @@ public class Project {
                 this.mobileDays <= 0 &&
                 this.wordpressDays <= 0 &&
                 this.prestashopDays <= 0;
+    }
+
+    public String shortDescription() {
+        return this.getName() + " (ukończono: " + this.getCompletePercent() + ")";
+    }
+
+    public String getCompletePercent() {
+        int completed = this.frontendDays + this.backendDays + this.databaseDays + this.mobileDays + this.wordpressDays + this.prestashopDays;
+        completed = this.days - completed;
+        return completed + "/" + this.days;
     }
 
     @Override

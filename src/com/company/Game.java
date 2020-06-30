@@ -78,7 +78,7 @@ public class Game {
         } else {
             System.out.println("Wybierz który projekt chcesz oddać:");
             for (Project project : projectToFinish) {
-                System.out.println(++index + ") " + project.getName());
+                System.out.println(++index + ") " + project.shortDescription());
             }
         }
         System.out.println("0) powrót");
@@ -104,7 +104,7 @@ public class Game {
 
         int index = 0;
         for (Project project : this.activeProjects) {
-            System.out.println(++index + ") " + project);
+            System.out.println(++index + ") " + project.shortDescription());
             System.out.println("============================");
         }
         System.out.println("0) powrót");
