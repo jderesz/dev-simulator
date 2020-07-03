@@ -19,6 +19,10 @@ public class Employee {
         this.dailyPayment = dailyPayment;
     }
 
+    public Double getDailyPayment() {
+        return dailyPayment;
+    }
+
     @Override
     public String toString() {
         List<String> skills = new ArrayList<String>();

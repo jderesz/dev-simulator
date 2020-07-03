@@ -13,6 +13,8 @@ public class Game {
     private ArrayList<Project> availableProjects = new ArrayList<Project>();
     private ArrayList<Project> activeProjects = new ArrayList<Project>();
     private ArrayList<Project> finishedProjects = new ArrayList<Project>();
+    private ArrayList<Employee> availableEmployees = new ArrayList<Employee>();
+    private ArrayList<Employee> activeEmployees = new ArrayList<Employee>();
     private double cash = 500.0;
     private LocalDate date = LocalDate.parse("2020-01-01");
     private int daysOfSearchingClients = 0;
@@ -21,6 +23,7 @@ public class Game {
     public Game() {
         this.initClients();
         this.initProjects();
+        this.initEmployees();
         this.showStartProjectView();
     }
 
@@ -51,10 +54,70 @@ public class Game {
             case 5:
                 this.showFinishProjectView();
                 break;
+            case 6:
+                this.showEmployeesView();
+                break;
+            case 7:
+                this.showDismissEmployeesView();
+                break;
             case 8:
                 this.showOfficeHoursView();
                 break;
         }
+    }
+
+    private void showDismissEmployeesView() {
+        System.out.println("============================");
+        if (this.activeEmployees.size() == 0 ) {
+            System.out.println("Brak zatrudnionych pracowników");
+            System.out.println("0) powrót");
+            int option = this.getKey(0, 0);
+            this.showMainView();
+            return;
+        }
+
+        int index = 0;
+        for (Employee employee : this.activeEmployees) {
+            System.out.println(++index + ") " + employee);
+            System.out.println("============================");
+        }
+        System.out.println("0) powrót");
+
+        System.out.println("Podaj numer pracownika do zwolnienia: ");
+        int option = getKey(0, this.activeEmployees.size());
+        if (option != 0) {
+            option--;
+            this.availableEmployees.add(this.activeEmployees.get(option));
+            this.activeEmployees.remove(this.activeEmployees.get(option));
+        }
+        this.showMainView();
+    }
+
+    private void showEmployeesView() {
+        System.out.println("============================");
+        if (this.availableEmployees.size() == 0 ) {
+            System.out.println("Brak dostępnych pracowników");
+            System.out.println("0) powrót");
+            int option = this.getKey(0, 0);
+            this.showMainView();
+            return;
+        }
+
+        int index = 0;
+        for (Employee employee : this.availableEmployees) {
+            System.out.println(++index + ") " + employee);
+            System.out.println("============================");
+        }
+        System.out.println("0) powrót");
+
+        System.out.println("Podaj numer pracownika do zatrudnienia: ");
+        int option = getKey(0, this.availableEmployees.size());
+        if (option != 0) {
+            option--;
+            this.activeEmployees.add(this.availableEmployees.get(option));
+            this.availableEmployees.remove(this.availableEmployees.get(option));
+        }
+        this.showMainView();
     }
 
     private void showOfficeHoursView() {
@@ -143,6 +206,15 @@ public class Game {
         }
         for (Project project : this.activeProjects) {
             project.dayilyAction();
+        }
+        if (this.date.getDayOfWeek().getValue() != 5 && this.date.getDayOfWeek().getValue() != 6) {
+            for (Employee employee : this.activeEmployees) {
+                this.cash -= employee.getDailyPayment();
+            }
+        }
+        if (this.cash < 0) {
+            System.out.println("Zbankrutowałeś!");
+            System.exit(0);
         }
     }
 
@@ -246,6 +318,44 @@ public class Game {
         project = new Project("Baza danych szkoły", this.getRandomClient(), 8, 400.0, 1600.0, 7, Project.Level.LOW);
         project.setDatabaseDays(8);
         projects.add(project);
+    }
+
+    private void initEmployees() {
+        Employee employee;
+
+        employee = new Employee("Adam Bober", 35.0);
+        employee.backendSkill = true;
+        employee.databaseSkill = true;
+        this.availableEmployees.add(employee);
+
+        employee = new Employee("Kamil Best", 150.0);
+        employee.backendSkill = true;
+        employee.databaseSkill = true;
+        employee.mobileSkill = true;
+        employee.frontendSkill = true;
+        employee.wordpressSkill = true;
+        employee.prestashopSkill = true;
+        this.availableEmployees.add(employee);
+
+        employee = new Employee("Martyna Kowalska", 50.0);
+        employee.mobileSkill = true;
+        employee.databaseSkill = true;
+        this.availableEmployees.add(employee);
+
+        employee = new Employee("Wojciech Lech", 75.0);
+        employee.backendSkill = true;
+        employee.databaseSkill = true;
+        employee.wordpressSkill = true;
+        employee.prestashopSkill = true;
+        this.availableEmployees.add(employee);
+
+        employee = new Employee("Mikołaj Otyłez", 90.0);
+        employee.backendSkill = true;
+        employee.databaseSkill = true;
+        employee.frontendSkill = true;
+        employee.wordpressSkill = true;
+        employee.prestashopSkill = true;
+        this.availableEmployees.add(employee);
     }
 
     public int getKey(int min, int max)
