@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Random;
+
 public class Project {
     public enum Level {
         LOW,
@@ -61,7 +63,22 @@ public class Project {
     public void dayilyAction() {
         this.daysToFinish--;
         if (this.daysToFinish == 0) {
-            //kara za opoznienie
+            Random random = new Random();
+            switch (this.client.getType()) {
+                case EASY:
+                    if (random.nextInt(9) > 1) {
+                        this.daysToFinish = 6;
+                    } else {
+                        this.reward -= this.deadlinePenalty;
+                        this.deadlinePenalty = 0;
+                    }
+                    break;
+                case MEDIUM:
+                case HARD:
+                    this.reward -= this.deadlinePenalty;
+                    this.deadlinePenalty = 0;
+                    break;
+            }
         }
     }
 
